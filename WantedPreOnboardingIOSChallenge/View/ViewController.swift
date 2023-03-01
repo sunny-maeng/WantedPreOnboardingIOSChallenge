@@ -9,6 +9,8 @@ import UIKit
 
 final class ViewController: UIViewController {
 
+    private let viewModel: ViewModel = ViewModel()
+
     private let imageDownLoadStackView1: ImageDownLoadStackView = ImageDownLoadStackView(frame: .zero)
     private let imageDownLoadStackView2: ImageDownLoadStackView = ImageDownLoadStackView(frame: .zero)
     private let imageDownLoadStackView3: ImageDownLoadStackView = ImageDownLoadStackView(frame: .zero)
@@ -39,6 +41,34 @@ final class ViewController: UIViewController {
 
         configureHierarchy()
         configureLayout()
+        bindViewModel()
+    }
+
+    private func bindViewModel() {
+        viewModel.updateImage1 = { [weak self] image in
+            guard let image = image else { return }
+            self?.imageDownLoadStackView1.changeImage(image)
+        }
+
+        viewModel.updateImage2 = { [weak self] image in
+            guard let image = image else { return }
+            self?.imageDownLoadStackView2.changeImage(image)
+        }
+
+        viewModel.updateImage3 = { [weak self] image in
+            guard let image = image else { return }
+            self?.imageDownLoadStackView3.changeImage(image)
+        }
+
+        viewModel.updateImage4 = { [weak self] image in
+            guard let image = image else { return }
+            self?.imageDownLoadStackView4.changeImage(image)
+        }
+
+        viewModel.updateImage5 = { [weak self] image in
+            guard let image = image else { return }
+            self?.imageDownLoadStackView5.changeImage(image)
+        }
     }
 
 }

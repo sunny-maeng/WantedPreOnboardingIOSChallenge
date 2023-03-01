@@ -51,4 +51,7 @@ final class ImageDownLoadStackView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func changeImage(_ image: UIImage) {
+        imageView.image = image
+    }
 }
