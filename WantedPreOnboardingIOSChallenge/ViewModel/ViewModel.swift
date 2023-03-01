@@ -9,6 +9,8 @@ import UIKit
 
 final class ViewModel {
 
+    private let urlSessionManager: URLSessionManager = URLSessionManager()
+
     private var image1: UIImage? = nil {
         didSet {
             updateImage1(image1)
@@ -40,5 +42,33 @@ final class ViewModel {
     var updateImage3: ( (UIImage?) -> Void ) = { _ in  }
     var updateImage4: ( (UIImage?) -> Void ) = { _ in  }
     var updateImage5: ( (UIImage?) -> Void ) = { _ in  }
-    
+
+    func loadImage(number: Int) {
+        guard let url = ImageURL.init(rawValue: number)?.url else {
+            print("url Error")
+            return
+        }
+
+        urlSessionManager.fetchData(url: url) { [weak self] result in
+            switch result {
+            case .success(let data):
+                switch number {
+                case 1: self?.image1 = UIImage(data: data)
+                case 2: self?.image2 = UIImage(data: data)
+                case 3: self?.image3 = UIImage(data: data)
+                case 4: self?.image4 = UIImage(data: data)
+                case 5: self?.image5 = UIImage(data: data)
+                default: return
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    func loadAllImage() {
+        Array(1...ImageURL.allCases.count).forEach { loadImage(number: $0) }
+    }
 }
+
+
