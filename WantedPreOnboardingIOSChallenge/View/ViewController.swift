@@ -47,27 +47,76 @@ final class ViewController: UIViewController {
     private func bindViewModel() {
         viewModel.updateImage1 = { [weak self] image in
             guard let image = image else { return }
-            self?.imageDownLoadStackView1.changeImage(image)
+            self?.imageDownLoadStackView1.imageView.image = image
         }
 
         viewModel.updateImage2 = { [weak self] image in
             guard let image = image else { return }
-            self?.imageDownLoadStackView2.changeImage(image)
+            self?.imageDownLoadStackView2.imageView.image = image
         }
 
         viewModel.updateImage3 = { [weak self] image in
             guard let image = image else { return }
-            self?.imageDownLoadStackView3.changeImage(image)
+            self?.imageDownLoadStackView3.imageView.image = image
         }
 
         viewModel.updateImage4 = { [weak self] image in
             guard let image = image else { return }
-            self?.imageDownLoadStackView4.changeImage(image)
+            self?.imageDownLoadStackView4.imageView.image = image
         }
 
         viewModel.updateImage5 = { [weak self] image in
             guard let image = image else { return }
-            self?.imageDownLoadStackView5.changeImage(image)
+            self?.imageDownLoadStackView5.imageView.image = image
+        }
+    }
+
+}
+
+extension ViewController {
+
+    final class ImageDownLoadStackView: UIStackView {
+
+        fileprivate let imageView: UIImageView = {
+            let photoImage: UIImage? = UIImage(systemName: "photo")
+            let imageView: UIImageView = UIImageView(image: photoImage)
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor,
+                                              multiplier: imageView.frame.height/imageView.frame.width).isActive = true
+
+            return imageView
+        }()
+
+        fileprivate let progressView: UIProgressView = {
+            let progressView: UIProgressView = UIProgressView(progressViewStyle: .bar)
+            progressView.translatesAutoresizingMaskIntoConstraints = false
+            progressView.trackTintColor = .systemGray3
+            progressView.progress = 0.5
+
+            return progressView
+        }()
+
+        fileprivate lazy var fetchButton: UIButton = {
+            let config = UIButton.Configuration.filled()
+            let button: UIButton = UIButton(configuration: config)
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.setTitle("Load", for: .normal)
+
+            return button
+        }()
+
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            [imageView, progressView, fetchButton].forEach { self.addArrangedSubview($0) }
+
+            self.spacing = 5
+            self.alignment = .center
+            self.distribution = .fillEqually
+            self.translatesAutoresizingMaskIntoConstraints = false
+        }
+
+        required init(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
         }
     }
 
