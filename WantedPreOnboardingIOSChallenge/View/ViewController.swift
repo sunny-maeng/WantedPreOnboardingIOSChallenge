@@ -10,7 +10,6 @@ import UIKit
 final class ViewController: UIViewController {
 
     private let viewModel: ViewModel = ViewModel()
-
     private let imageDownLoadStackView1: ImageDownLoadStackView = ImageDownLoadStackView(frame: .zero)
     private let imageDownLoadStackView2: ImageDownLoadStackView = ImageDownLoadStackView(frame: .zero)
     private let imageDownLoadStackView3: ImageDownLoadStackView = ImageDownLoadStackView(frame: .zero)
@@ -85,6 +84,7 @@ final class ViewController: UIViewController {
 
     private func generateLoadButtonAction(buttonNumber: Int) -> UIAction {
         return UIAction { [weak self] _ in
+            self?.viewModel.placeDefaultImage(number: buttonNumber)
             self?.viewModel.loadImage(number: buttonNumber)
         }
     }
@@ -181,4 +181,3 @@ extension ViewController {
     }
 
 }
-

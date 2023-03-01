@@ -37,11 +37,24 @@ final class ViewModel {
         }
     }
 
+    private let defaultImage: UIImage? = UIImage(systemName: "photo")
+
     var updateImage1: ( (UIImage?) -> Void ) = { _ in}
     var updateImage2: ( (UIImage?) -> Void ) = { _ in  }
     var updateImage3: ( (UIImage?) -> Void ) = { _ in  }
     var updateImage4: ( (UIImage?) -> Void ) = { _ in  }
     var updateImage5: ( (UIImage?) -> Void ) = { _ in  }
+
+    func placeDefaultImage(number: Int) {
+        switch number {
+        case 1: image1 = defaultImage
+        case 2: image2 = defaultImage
+        case 3: image3 = defaultImage
+        case 4: image4 = defaultImage
+        case 5: image5 = defaultImage
+        default: return
+        }
+    }
 
     func loadImage(number: Int) {
         guard let url = ImageURL.init(rawValue: number)?.url else {
@@ -67,7 +80,10 @@ final class ViewModel {
     }
 
     func loadAllImage() {
-        Array(1...ImageURL.allCases.count).forEach { loadImage(number: $0) }
+        Array(1...ImageURL.allCases.count).forEach {
+            placeDefaultImage(number: $0)
+            loadImage(number: $0)
+        }
     }
 }
 
