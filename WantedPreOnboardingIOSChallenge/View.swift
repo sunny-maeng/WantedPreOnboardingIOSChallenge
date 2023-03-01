@@ -7,9 +7,9 @@
 
 import UIKit
 
-class View: UIView {
+class ImageDownLoadStackView: UIStackView {
 
-    private let firstImageView: UIImageView = {
+    private let imageView: UIImageView = {
         let photoImage: UIImage? = UIImage(systemName: "photo")
         let imageView: UIImageView = UIImageView(image: photoImage)
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -18,19 +18,41 @@ class View: UIView {
     }()
 
     private let progressView: UIProgressView = {
-        let progressView: UIProgressView = UIProgressView(frame: .zero)
+        let progressView: UIProgressView = UIProgressView(progressViewStyle: .bar)
+        progressView.progress = 0.5
+        progressView.trackTintColor = .systemGray3
         progressView.translatesAutoresizingMaskIntoConstraints = false
 
         return progressView
     }()
 
-    private let firstImageHorizontalStackView: UIStackView = {
-        let stack = UIStackView(frame: .zero)
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.backgroundColor = .blue
+    private let fetchButton: UIButton = {
+        let button: UIButton = UIButton(type: .system)
+        button.setTitle("Load", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
 
-        return stack
+        return button
     }()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.addArrangedSubview(imageView)
+        self.addArrangedSubview(progressView)
+        self.addArrangedSubview(fetchButton)
+
+        self.spacing = 10
+        self.alignment = .center
+        self.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class View: UIView {
+
+    let firstImageDownLoadStackView: ImageDownLoadStackView = ImageDownLoadStackView(frame: .zero)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,17 +67,17 @@ class View: UIView {
     }
 
     private func configureHierarchy() {
-        firstImageHorizontalStackView.addArrangedSubview(firstImageView)
-        self.addSubview(firstImageHorizontalStackView)
+
+        self.addSubview(firstImageDownLoadStackView)
     }
     private func configureLayout() {
         let margin: CGFloat = 10
         let safeArea = self.safeAreaLayoutGuide
 
         NSLayoutConstraint.activate([
-            firstImageHorizontalStackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: margin),
-            firstImageHorizontalStackView.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: margin),
-            firstImageHorizontalStackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: margin),
+            firstImageDownLoadStackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: margin),
+            firstImageDownLoadStackView.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: margin),
+            firstImageDownLoadStackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -margin),
         ])
     }
 }
